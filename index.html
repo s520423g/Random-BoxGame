@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @keyframes float {
+            50% {
+                top: 32%;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body,
+        .game {
+            margin: 0;
+            background-color: #D1E9E9;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: monospace;
+        }
+
+        .box-big {
+            background-color: #FFFFF4;
+            width: 500px;
+            height: 500px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+            align-content: space-evenly;
+            padding: 20px;
+            border-radius: 20px;
+        }
+
+        .stop-box {
+            background-color: #c6bdacec;
+            width: 350px;
+            height: 350px;
+            border-radius: 20px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -55%);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .sign-box {
+            /* background-color: #7e6b6f; */
+            width: 80%;
+            height: 60%;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-evenly;
+        }
+
+        .line {
+            height: 80%;
+            width: 20px;
+            background-color: #807a6ef3;
+        }
+
+        .box {
+            background-color: #5CADAD;
+            width: 100%;
+            height: 100%;
+            border: 2px solid #FFFFF4;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #707038;
+        }
+
+        .time-stop-box {
+            /* background-color: #5CADAD; */
+            width: 500px;
+            padding: 10px 30px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .time {
+            background-color: #c6bdac8a;
+            padding: 5px 10px;
+            border-radius: 10px;
+            width: 60px;
+            color: #FFFFF4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        .time-out,
+        .pass {
+            font-size: 50px;
+            color: #736d3b;
+            text-shadow: 0px 0px 3px #5e5053;
+        }
+
+        .sc-box {
+            color: #736d3b;
+            font-size: 24px;
+        }
+
+        .score {
+            font-size: 24px;
+            background-color: #c6bdac8a;
+            padding: 5px 10px;
+            margin-bottom: 10px;
+            height: 35px;
+            border-radius: 10px;
+            width: 60px;
+            color: #FFFFF4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .answer {
+            opacity: 0.5;
+        }
+
+        .page-set {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 位置很重要,要在hide前才不會後蓋前 */
+        .home,
+        .time-out {
+            background-color: #DDDDFF;
+            flex-direction: column;
+        }
+
+        .keep {
+            width: fit-content;
+            height: 50px;
+            font-size: 20px;
+            background-color: #9e9789f3;
+            border: 2px solid #8e7e5e;
+            color: #FFFFF4;
+        }
+
+        span {
+            font-size: 50px;
+            color: #736d3b;
+            text-shadow: 0px 0px 3px #5e5053;
+            position: absolute;
+            left: 50%;
+            top: 38%;
+            transform: translateX(-45%);
+            animation: float 2s linear 0s infinite;
+        }
+
+        button {
+            background-color: #7e6b6f;
+            border-radius: 20px;
+            color: #c6bdac;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #645457;
+            /* border: none; */
+        }
+
+        .start,
+        .back,
+        .restart {
+            margin-top: 30px;
+            width: fit-content;
+            height: 50px;
+            font-size: 24px;
+            padding: 10px 15px;
+        }
+
+        .stop {
+            background-color: #c6bdacf3;
+            border: 2px solid #b1a896;
+            color: #FFFFF4;
+            width: 80px;
+            height: 50px;
+            font-size: 20px;
+        }
+
+        .hide {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="home page-set">
+        <span>READY?</span>
+        <button type="button" class="start">GO!</button>
+    </div>
+    <div class="time-out page-set">
+        <p>TIME'S OUT</p>
+        <div class="sc-box"> SCORE:</div>
+        <div class="score"></div>
+        <div class="tu-box">
+            <button type="button" class="back">BACK</button>
+            <button type="button" class="restart">RESTART</button>
+        </div>
+    </div>
+    <div class="pass page-set">
+        <p>CONGRATULATIONS!</p>
+        <div class="sc-box"> SCORE:</div>
+        <div class="score"></div>
+        <div class="tu-box">
+            <button type="button" class="back">BACK</button>
+            <button type="button" class="restart">RESTART</button>
+        </div>
+    </div>
+    <div class="game page-set">
+        <div class="stop-box">
+            <div class="sign-box">
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+            <button type="button" class="keep">CONTINUE</button>
+        </div>
+        <div class="sc-box">SCORE:</div>
+        <div class="score"></div>
+        <div class="box-big">
+            <div class="box"></div>
+        </div>
+        <div class="time-stop-box">
+            <div class="time"></div>
+            <button type="button" class="stop">STOP</button>
+        </div>
+    </div>
+    <script>
+        const home = document.querySelector('.home');
+        const game = document.querySelector('.game');
+        const start = document.querySelector('.start');
+        const stopBox = document.querySelector('.stop-box');
+        const keep = document.querySelector('.keep');
+        const stop = document.querySelector('.stop');
+        const time = document.querySelector('.time');
+        const gameScore = document.querySelector('.game .score');
+        const timeScore = document.querySelector('.time-out .score');
+        const passScore = document.querySelector('.pass .score');
+        const outBack = document.querySelector('.time-out .back');
+        const outRestart = document.querySelector('.time-out .restart');
+        const passBack = document.querySelector('.pass .back');
+        const passRestart = document.querySelector('.pass .restart');
+        const timeOut = document.querySelector('.time-out');
+        const pass = document.querySelector('.pass');
+
+        let counter = 60;
+        let timeCount;
+
+        time.textContent = counter;
+
+        //初始化變數
+        let boxBig = document.querySelector('.box-big');
+        let level = 2;
+        let passCount = 0;
+        let size = 100 / level;
+        let scoreNumber = 0;
+
+        stopBox.classList.add('hide');
+        game.classList.add('hide');
+        timeOut.classList.add('hide');
+        pass.classList.add('hide');
+
+        //箭頭函式 () => function () :function 變箭號=> 並移至()後面
+        //開始遊戲
+        start.addEventListener('click', () => {
+            resetGame();
+            resetTime();
+            home.classList.add('hide');
+            game.classList.remove('hide');
+            timeCount = setInterval(showTime, 1000);
+        });
+
+        //繼續遊戲
+        keep.addEventListener('click', () => {
+            game.classList.remove('hide');
+            home.classList.add('hide');
+            stopBox.classList.add('hide');
+            timeCount = setInterval(showTime, 1000);
+        });
+
+        //暫停遊戲(時間暫停)
+        stop.addEventListener('click', () => {
+            stopBox.classList.remove('hide');
+            clearInterval(timeCount);
+        });
+
+        //返回首頁
+        outBack.addEventListener('click', () => {
+            console.log('0111');
+            home.classList.remove('hide');
+            stopBox.classList.add('hide');
+            timeOut.classList.add('hide');
+            pass.classList.add('hide');
+            clearInterval(timeCount);
+            resetGame();
+        });
+
+        //重新開始
+        outRestart.addEventListener('click', () => {
+            console.log('0111');
+            resetGame();
+            resetTime();
+            pass.classList.add('hide');
+            game.classList.remove('hide');
+            home.classList.add('hide');
+            stopBox.classList.add('hide');
+            timeOut.classList.add('hide');
+            timeCount = setInterval(showTime, 1000);
+        });
+
+        //顯示時間
+        function showTime() {
+            counter--;
+            time.textContent = counter;
+            if (counter <= 0) {
+                clearInterval(timeCount);
+                timeOut.classList.remove('hide');
+                game.classList.add('hide');
+                home.classList.add('hide');
+                timeOut.querySelector('.score').textContent = scoreNumber;
+            };
+        };
+
+        //重置時間
+        function resetTime() {
+            clearInterval(timeCount);
+            counter = 60;
+            time.textContent = counter;
+        };
+
+        //重置遊戲
+        function resetGame() {
+            scoreNumber = 0; //重置分數
+            level = 2; //重置關卡
+            passCount = 0; //重置通關次數
+            size = 100 / level; //重置關卡大小
+            gameScore.textContent = scoreNumber; //重置分數顯示
+            boxBig.innerHTML = ''; //清空盒子
+            repeatDo(); //重新開始遊戲
+        }
+
+        //===============================================
+
+
+        //5.重複
+        repeatDo();
+
+        function repeatDo() {
+            //初始化分數顯示
+            gameScore.textContent = scoreNumber;
+            //1.先產盒子 =>產前必須清空
+            boxBig.innerHTML = '';
+            //按下時產生盒子
+            for (let i = 0; i < level ** 2; i++) {
+                boxBig.innerHTML += `<div class="box"></div>`;
+            }
+            //2.取產生後的盒子 =>變寬高,顏色
+            let boxAll = document.querySelectorAll('.box');
+            let color = `rgb(${getColor(1, 255)},${getColor(1, 255)},${getColor(1, 255)})`;
+            for (let i = 0; i < level ** 2; i++) {
+                let boxTemp = boxAll[i];
+                boxTemp.style.width = `${size}%`;
+                boxTemp.style.height = `${size}%`;
+                boxTemp.style.backgroundColor = color;
+            };
+            //3.產生答案 =>關數越高時增加難度
+            let answerIndex = Math.floor(Math.random() * (level ** 2));
+            let answerBox = boxAll[answerIndex];
+            // answerBox.classList.add('answer');
+            answerBox.style.opacity = `${0.5 + level * 0.005 + passCount * 0.001}`;
+            //4.再開始按下(偵測答案盒是否被按下)
+            answerBox.addEventListener('click', function () {
+                scoreNumber++;
+                gameScore.textContent = scoreNumber;
+                //每關的過關次數
+                passCount++;
+                //當過關次數 = 關數 (ex:第三關要過3次,才進入下一關)
+                if (passCount == level) {
+                    level++;
+                    passCount = 0;
+                    size = 100 / level;
+                }
+                if (level < 10) {
+                    //4.按下後再一直重複
+                    repeatDo();
+                } else {
+                    //5.到第15關時即pass
+                    pass.classList.remove('hide');
+                    passScore.textContent = scoreNumber;
+
+                    game.classList.add('hide');
+
+                    //pass頁面返回
+                    passBack.addEventListener('click', () => {
+                        home.classList.remove('hide');
+                        pass.classList.add('hide');
+                        clearInterval(timeCount);
+                        resetGame();
+                    });
+
+                    //pass頁面重新開始
+                    passRestart.addEventListener('click', () => {
+                        resetGame();
+                        resetTime();
+                        pass.classList.add('hide');
+                        game.classList.remove('hide');
+                        timeCount = setInterval(showTime, 1000);
+                    }); 
+                };
+            });
+        };
+
+        function getColor(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        };
+
+    </script>
+</body>
+
+</html>
+<!-- 產盒子 -->
+<!-- 取產生盒子後的盒子 =>變寬高,顏色 -->
+<!-- 產生答案 -->
+<!-- 偵測答案盒是否被按下:做一些過關設定 -->
+<!-- 再重複 -->
